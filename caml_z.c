@@ -1467,8 +1467,8 @@ static value ml_z_tdiv_qr(value arg1, value arg2)
   Z_CHECK(q);
   Z_CHECK(r);
   p = caml_alloc_small(2, 0);
-  Field(p,0) = q;
-  Field(p,1) = r;
+  Store_field(p,0,q);
+  Store_field(p,1,r);
   CAMLreturn(p);
 }
 
@@ -1487,8 +1487,8 @@ CAMLprim value ml_z_div_rem(value arg1, value arg2)
     r = a1 % a2;
     if (Z_FITS_INT(q) && Z_FITS_INT(r)) {
       value p = caml_alloc_small(2, 0);
-      Field(p,0) = Val_long(q);
-      Field(p,1) = Val_long(r);
+      Store_field(p,0,Val_long(q));
+      Store_field(p,1,Val_long(r));
       return p;
     }
   }
@@ -1729,8 +1729,8 @@ CAMLprim value ml_z_sqrt_rem(value arg)
   Z_CHECK(r);
   Z_CHECK(s);
   p = caml_alloc_small(2, 0);
-  Field(p,0) = r;
-  Field(p,1) = s;
+  Store_field(p,0,r);
+  Store_field(p,1,s);
   CAMLreturn(p);
 }
 
@@ -1844,7 +1844,7 @@ CAMLprim value ml_z_gcdext_intern(value arg1, value arg2)
     sz = mpn_gcdext(Z_LIMB(r), Z_LIMB(s), &sn,
                     Z_LIMB(res_arg1), size_arg1, Z_LIMB(res_arg2), size_arg2);
     p = caml_alloc_small(3, 0);
-    Field(p,2) = Val_true;
+    Store_field(p,2,Val_true);
   }
   else {
     r = ml_z_alloc(size_arg2 + 1);
@@ -1852,7 +1852,7 @@ CAMLprim value ml_z_gcdext_intern(value arg1, value arg2)
     sz = mpn_gcdext(Z_LIMB(r), Z_LIMB(s), &sn,
                     Z_LIMB(res_arg2), size_arg2, Z_LIMB(res_arg1), size_arg1);
     p = caml_alloc_small(3, 0);
-    Field(p,2) = Val_false;
+    Store_field(p,2,Val_false);
     sign_arg1 = sign_arg2;
   }
   /* pack result */
@@ -1861,8 +1861,8 @@ CAMLprim value ml_z_gcdext_intern(value arg1, value arg2)
   else s = ml_z_reduce(s, -sn, sign_arg1 ^ Z_SIGN_MASK);
   Z_CHECK(r);
   Z_CHECK(s);
-  Field(p,0) = r;
-  Field(p,1) = s;
+  Store_field(p,0,r);
+  Store_field(p,1,s);
   CAMLreturn(p);
 }
 
